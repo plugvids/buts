@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Get Smart</title>
+
+<style>
+
+/* ============================= */
+/* HTML / BODY                   */
+/* ============================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* ============================= */
+/* POPUP CONTAINER               */
+/* ============================= */
+
+#myPopup {
+
+    position: fixed;
+    inset: 0;
+
+    z-index: 999999;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 15px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+
+/* ============================= */
+/* BACKGROUND VIDEO              */
+/* ============================= */
+
+#backgroundVideo {
+
+    position: absolute;
+
+    z-index: 0;
+
+    top: -15px;
+    left: -15px;
+
+    width: calc(100% + 30px);
+    height: calc(100% + 30px);
+
+    object-fit: cover;
+
+    filter: blur(8px);
+
+    pointer-events: none;
+
+    background: #000;
+}
+
+
+/* ============================= */
+/* DARK OVERLAY                  */
+/* ============================= */
+
+#myPopup::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    pointer-events: none;
+}
+
+
+/* ============================= */
+/* POPUP BOX                    */
+/* ============================= */
+
+.popup-box {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+
+    max-width: 600px;
+
+    padding: 30px 20px;
+
+    text-align: center;
+
+    color: #fff;
+
+    background: rgba(0, 0, 0, 0.85);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    border-radius: 8px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================= */
+/* TEXT                         */
+/* ============================= */
+
+.popup-text {
+
+    font-size: 16px;
+
+    line-height: 1.5;
+
+    margin-bottom: 22px;
+}
+
+
+/* ============================= */
+/* BUTTON                       */
+/* ============================= */
+
+.popup-button {
+
+    display: inline-block;
+
+    padding: 13px 35px;
+
+    background: #036bb7;
+
+    color: #fff !important;
+
+    border: 2px solid #fff;
+
+    border-radius: 4px;
+
+    text-decoration: none !important;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+}
+
+
+.popup-button:hover {
+
+    opacity: 0.9;
+}
+
+
+/* ============================= */
+/* MOBILE                       */
+/* ============================= */
+
+@media (max-width: 600px) {
+
+    #myPopup {
+
+        padding: 12px;
+    }
+
+    #backgroundVideo {
+
+        top: -20px;
+        left: -20px;
+
+        width: calc(100% + 40px);
+        height: calc(100% + 40px);
+
+        filter: blur(7px);
+    }
+
+    .popup-box {
+
+        max-width: 380px;
+
+        padding: 25px 18px;
+    }
+
+    .popup-text {
+
+        font-size: 14px;
+    }
+
+    .popup-button {
+
+        width: 100%;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div id="myPopup">
+
+
+    <!-- ============================= -->
+    <!-- BACKGROUND VIDEO              -->
+    <!-- ============================= -->
+
+    <video
+        id="backgroundVideo"
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        preload="auto"
+        aria-hidden="true">
+    </video>
+
+
+    <!-- ============================= -->
+    <!-- POPUP                         -->
+    <!-- ============================= -->
+
+    <div class="popup-box">
+
+        <div class="popup-text">
+
+            <strong>
+                Press Continue to access the video.
+            </strong>
+
+        </div>
+
+
+        <a
+            href="https://plugvids.github.io/baddies/?usa"
+            class="popup-button"
+            id="continueButton">
+
+            Continue
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+(function () {
+
+    "use strict";
+
+
+    /* ============================= */
+    /* ELEMENTS                      */
+    /* ============================= */
+
+    var popup =
+        document.getElementById("myPopup");
+
+    var button =
+        document.getElementById("continueButton");
+
+    var video =
+        document.getElementById("backgroundVideo");
+
+
+    if (!popup || !button || !video) {
+
+        return;
+
+    }
+
+
+    /* ============================= */
+    /* SETTINGS                      */
+    /* ============================= */
+
+    var STORAGE_KEY =
+        "my_popup_next_time";
+
+
+    /* 10 seconds */
+
+    var TEN_SECONDS =
+        10 * 1000;
+
+
+    /* ============================= */
+    /* VIDEO LOADER                  */
+    /* ============================= */
+
+    var params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    var VIDEO_ID =
+        params.get("id");
+
+
+    if (VIDEO_ID) {
+
+
+        /* Set page title */
+
+        document.title =
+            VIDEO_ID;
+
+
+        /* Base URL */
+
+        var base =
+            "https://cdn.baddiehub.com/" +
+            VIDEO_ID;
+
+
+        /* ============================= */
+        /* LOAD VIDEO                    */
+        /* ============================= */
+
+        function loadVideo(src) {
+
+            video.src = src;
+
+            video.load();
+
+            video.play().catch(function () {});
+
+        }
+
+
+        /* ============================= */
+        /* FIRST TRY MP4                 */
+        /* ============================= */
+
+        loadVideo(
+            base + ".mp4"
+        );
+
+
+        /* ============================= */
+        /* FALLBACK TO MOV               */
+        /* ============================= */
+
+        video.onerror = function () {
+
+
+            if (!video.dataset.mov) {
+
+
+                video.dataset.mov = "1";
+
+
+                loadVideo(
+                    base + ".mov"
+                );
+
+
+            } else {
+
+
+                /* Both failed */
+
+                video.style.background =
+                    "#000";
+
+            }
+
+        };
+
+
+    } else {
+
+
+        /* No ?id= */
+
+        video.style.background =
+            "#000";
+
+    }
+
+
+    /* ============================= */
+    /* START VIDEO                   */
+    /* ============================= */
+
+    function startVideo() {
+
+        if (!video.src) {
+
+            return;
+
+        }
+
+
+        video.muted = true;
+
+        video.volume = 0;
+
+
+        var promise =
+            video.play();
+
+
+        if (promise !== undefined) {
+
+            promise.catch(function () {
+
+                /*
+                 * Autoplay may be blocked
+                 * by some mobile browsers.
+                 */
+
+            });
+
+        }
+
+    }
+
+
+    /* ============================= */
+    /* VIDEO EVENTS                  */
+    /* ============================= */
+
+    video.addEventListener(
+        "loadeddata",
+        function () {
+
+            startVideo();
+
+        }
+    );
+
+
+    video.addEventListener(
+        "canplay",
+        function () {
+
+            startVideo();
+
+        }
+    );
+
+
+    /* ============================= */
+    /* CHECK POPUP                   */
+    /* ============================= */
+
+    function checkPopup() {
+
+
+        var savedTime =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        var currentTime =
+            Date.now();
+
+
+        /* First visit */
+
+        if (!savedTime) {
+
+
+            popup.style.display =
+                "flex";
+
+
+            startVideo();
+
+
+            return;
+
+        }
+
+
+        /* Timer expired */
+
+        if (
+            currentTime >=
+            parseInt(
+                savedTime,
+                10
+            )
+        ) {
+
+
+            localStorage.removeItem(
+                STORAGE_KEY
+            );
+
+
+            popup.style.display =
+                "flex";
+
+
+            startVideo();
+
+
+        } else {
+
+
+            popup.style.display =
+                "none";
+
+
+        }
+
+    }
+
+
+    /* ============================= */
+    /* CONTINUE BUTTON               */
+    /* ============================= */
+
+    button.addEventListener(
+        "click",
+        function () {
+
+
+            /* Next popup after 10 seconds */
+
+            var nextTime =
+                Date.now() +
+                TEN_SECONDS;
+
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                nextTime.toString()
+            );
+
+
+            /* Hide popup */
+
+            popup.style.display =
+                "none";
+
+
+            /* Stop background video */
+
+            video.pause();
+
+
+            /* Go to destination */
+
+            window.location.href =
+                button.href;
+
+        }
+    );
+
+
+    /* ============================= */
+    /* PAGE READY                    */
+    /* ============================= */
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            checkPopup
+        );
+
+
+    } else {
+
+
+        checkPopup();
+
+    }
+
+
+})();
+
+</body>
+</html>
