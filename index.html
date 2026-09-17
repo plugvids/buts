@@ -14,10 +14,6 @@ body {
     height: 100%;
 }
 
-/* ============================= */
-/* POPUP CONTAINER               */
-/* ============================= */
-
 #myPopup {
     position: fixed;
     inset: 0;
@@ -32,11 +28,6 @@ body {
 
     overflow: hidden;
 }
-
-
-/* ============================= */
-/* BACKGROUND VIDEO               */
-/* ============================= */
 
 #backgroundVideo {
     position: absolute;
@@ -57,11 +48,6 @@ body {
     background: #000;
 }
 
-
-/* ============================= */
-/* DARK OVERLAY                   */
-/* ============================= */
-
 #myPopup::before {
     content: "";
 
@@ -74,11 +60,6 @@ body {
 
     pointer-events: none;
 }
-
-
-/* ============================= */
-/* POPUP BOX                     */
-/* ============================= */
 
 .popup-box {
     position: relative;
@@ -100,22 +81,12 @@ body {
     box-sizing: border-box;
 }
 
-
-/* ============================= */
-/* TEXT                          */
-/* ============================= */
-
 .popup-text {
     font-size: 16px;
     line-height: 1.5;
 
     margin-bottom: 22px;
 }
-
-
-/* ============================= */
-/* BUTTON                        */
-/* ============================= */
 
 .popup-button {
     display: inline-block;
@@ -140,11 +111,6 @@ body {
     opacity: 0.9;
 }
 
-
-/* ============================= */
-/* MOBILE                        */
-/* ============================= */
-
 @media (max-width: 600px) {
 
     #myPopup {
@@ -163,7 +129,6 @@ body {
 
     .popup-box {
         max-width: 380px;
-
         padding: 25px 18px;
     }
 
@@ -200,7 +165,6 @@ body {
 
     </video>
 
-
     <!-- POPUP -->
 
     <div class="popup-box">
@@ -219,7 +183,6 @@ body {
     </div>
 
 </div>
-
 
 <script>
 (function () {
@@ -270,15 +233,10 @@ body {
         if (promise !== undefined) {
 
             promise.catch(function () {
-
                 /*
-                 * Beberapa browser mobile
-                 * dapat menolak autoplay.
-                 *
-                 * Tidak melakukan redirect
-                 * atau membuka halaman lain.
+                 * Some mobile browsers may
+                 * block autoplay.
                  */
-
             });
 
         }
@@ -293,16 +251,12 @@ body {
 
         video.addEventListener(
             "loadeddata",
-            function () {
-                startVideo();
-            }
+            startVideo
         );
 
         video.addEventListener(
             "canplay",
-            function () {
-                startVideo();
-            }
+            startVideo
         );
 
         video.addEventListener(
@@ -310,8 +264,8 @@ body {
             function () {
 
                 /*
-                 * Jika video gagal dimuat,
-                 * background tetap hitam.
+                 * Keep the background black
+                 * if the video cannot load.
                  */
 
                 video.style.background =
@@ -331,9 +285,7 @@ body {
     function checkPopup() {
 
         var savedTime =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
+            localStorage.getItem(STORAGE_KEY);
 
         var currentTime =
             Date.now();
@@ -366,8 +318,15 @@ body {
 
         } else {
 
+            /*
+             * Keep the popup visible instead
+             * of hiding the entire page.
+             */
+
             popup.style.display =
-                "none";
+                "flex";
+
+            startVideo();
 
         }
     }
@@ -390,10 +349,6 @@ body {
                 STORAGE_KEY,
                 nextTime.toString()
             );
-
-
-            popup.style.display =
-                "none";
 
 
             if (video) {
@@ -428,10 +383,69 @@ body {
 
     }
 
+
+    /* ============================= */
+    /* BACK BUTTON FIX               */
+    /* ============================= */
+
+    window.addEventListener(
+        "pageshow",
+        function () {
+
+            /*
+             * Restore the popup when the
+             * browser returns to this page.
+             */
+
+            popup.style.display =
+                "flex";
+
+            startVideo();
+
+        }
+    );
+
+
 })();
 </script>
 
-</body>
+<!-- Histats.com START -->
+<script type="text/javascript">
+var _Hasync = _Hasync || [];
+
+_Hasync.push([
+    'Histats.start',
+    '1,4999790,4,0,0,0,00010000'
+]);
+
+_Hasync.push([
+    'Histats.fasi',
+    '1'
+]);
+
+_Hasync.push([
+    'Histats.track_hits',
+    ''
+]);
+
+(function() {
+
+    var hs =
+        document.createElement('script');
+
+    hs.type = 'text/javascript';
+    hs.async = true;
+
+    hs.src =
+        '//s10.histats.com/js15_as.js';
+
+    (
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+    ).appendChild(hs);
+
+})();
+</script>
 <!-- Histats.com  START  (aync)-->
 <script type="text/javascript">var _Hasync= _Hasync|| [];
 _Hasync.push(['Histats.start', '1,4999790,4,0,0,0,00010000']);
@@ -442,6 +456,7 @@ var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async
 hs.src = ('//s10.histats.com/js15_as.js');
 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
 })();</script>
-<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4999790&101" alt="advanced web statistics" border="0"></a></noscript>
-<!-- Histats.com  END  -->    
+<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4999790&101" alt="website statistics" border="0"></a></noscript>
+<!-- Histats.com  END  -->
+</body>
 </html>
