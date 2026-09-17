@@ -1,18 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Get Smart</title>
+<title>Get Smart Buts</title>
 
 <style>
-
-/* ============================= */
-/* HTML / BODY                   */
-/* ============================= */
-
 html,
 body {
     margin: 0;
@@ -21,25 +14,20 @@ body {
     height: 100%;
 }
 
-
 /* ============================= */
 /* POPUP CONTAINER               */
 /* ============================= */
 
 #myPopup {
-
     position: fixed;
     inset: 0;
-
     z-index: 999999;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
     padding: 15px;
-
     box-sizing: border-box;
 
     overflow: hidden;
@@ -47,13 +35,11 @@ body {
 
 
 /* ============================= */
-/* BACKGROUND VIDEO              */
+/* BACKGROUND VIDEO               */
 /* ============================= */
 
 #backgroundVideo {
-
     position: absolute;
-
     z-index: 0;
 
     top: -15px;
@@ -73,15 +59,13 @@ body {
 
 
 /* ============================= */
-/* DARK OVERLAY                  */
+/* DARK OVERLAY                   */
 /* ============================= */
 
 #myPopup::before {
-
     content: "";
 
     position: absolute;
-
     inset: 0;
 
     z-index: 1;
@@ -93,29 +77,24 @@ body {
 
 
 /* ============================= */
-/* POPUP BOX                    */
+/* POPUP BOX                     */
 /* ============================= */
 
 .popup-box {
-
     position: relative;
-
     z-index: 2;
 
     width: 100%;
-
     max-width: 600px;
 
     padding: 30px 20px;
 
     text-align: center;
-
     color: #fff;
 
     background: rgba(0, 0, 0, 0.85);
 
     border: 1px solid rgba(255, 255, 255, 0.25);
-
     border-radius: 8px;
 
     box-sizing: border-box;
@@ -123,13 +102,11 @@ body {
 
 
 /* ============================= */
-/* TEXT                         */
+/* TEXT                          */
 /* ============================= */
 
 .popup-text {
-
     font-size: 16px;
-
     line-height: 1.5;
 
     margin-bottom: 22px;
@@ -137,52 +114,44 @@ body {
 
 
 /* ============================= */
-/* BUTTON                       */
+/* BUTTON                        */
 /* ============================= */
 
 .popup-button {
-
     display: inline-block;
 
     padding: 13px 35px;
 
     background: #036bb7;
-
     color: #fff !important;
 
     border: 2px solid #fff;
-
     border-radius: 4px;
 
     text-decoration: none !important;
 
     font-weight: bold;
-
     cursor: pointer;
 
     box-sizing: border-box;
 }
 
-
 .popup-button:hover {
-
     opacity: 0.9;
 }
 
 
 /* ============================= */
-/* MOBILE                       */
+/* MOBILE                        */
 /* ============================= */
 
 @media (max-width: 600px) {
 
     #myPopup {
-
         padding: 12px;
     }
 
     #backgroundVideo {
-
         top: -20px;
         left: -20px;
 
@@ -193,37 +162,27 @@ body {
     }
 
     .popup-box {
-
         max-width: 380px;
 
         padding: 25px 18px;
     }
 
     .popup-text {
-
         font-size: 14px;
     }
 
     .popup-button {
-
         width: 100%;
     }
-
 }
-
 </style>
 </head>
 
-
 <body>
-
 
 <div id="myPopup">
 
-
-    <!-- ============================= -->
-    <!-- BACKGROUND VIDEO              -->
-    <!-- ============================= -->
+    <!-- BACKGROUND VIDEO -->
 
     <video
         id="backgroundVideo"
@@ -234,31 +193,27 @@ body {
         webkit-playsinline
         preload="auto"
         aria-hidden="true">
+
+        <source
+            src="https://cdn.videy.co/y7YkZSQf1.mp4"
+            type="video/mp4">
+
     </video>
 
 
-    <!-- ============================= -->
-    <!-- POPUP                         -->
-    <!-- ============================= -->
+    <!-- POPUP -->
 
     <div class="popup-box">
 
         <div class="popup-text">
-
-            <strong>
-                Press Continue to access the video.
-            </strong>
-
+            <strong>Press Continue to access the video.</strong>
         </div>
-
 
         <a
             href="https://plugvids.github.io/baddies/?vids"
             class="popup-button"
             id="continueButton">
-
             Continue
-
         </a>
 
     </div>
@@ -267,15 +222,9 @@ body {
 
 
 <script>
-
 (function () {
 
     "use strict";
-
-
-    /* ============================= */
-    /* ELEMENTS                      */
-    /* ============================= */
 
     var popup =
         document.getElementById("myPopup");
@@ -287,10 +236,8 @@ body {
         document.getElementById("backgroundVideo");
 
 
-    if (!popup || !button || !video) {
-
+    if (!popup || !button) {
         return;
-
     }
 
 
@@ -301,107 +248,8 @@ body {
     var STORAGE_KEY =
         "my_popup_next_time";
 
-
-    /* 10 seconds */
-
-    var TEN_SECONDS =
-        10 * 1000;
-
-
-    /* ============================= */
-    /* VIDEO LOADER                  */
-    /* ============================= */
-
-    var params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    var VIDEO_ID =
-        params.get("id");
-
-
-    if (VIDEO_ID) {
-
-
-        /* Set page title */
-
-        document.title =
-            VIDEO_ID;
-
-
-        /* Base URL */
-
-        var base =
-            "https://cdn.baddiehub.com/" +
-            VIDEO_ID;
-
-
-        /* ============================= */
-        /* LOAD VIDEO                    */
-        /* ============================= */
-
-        function loadVideo(src) {
-
-            video.src = src;
-
-            video.load();
-
-            video.play().catch(function () {});
-
-        }
-
-
-        /* ============================= */
-        /* FIRST TRY MP4                 */
-        /* ============================= */
-
-        loadVideo(
-            base + ".mp4"
-        );
-
-
-        /* ============================= */
-        /* FALLBACK TO MOV               */
-        /* ============================= */
-
-        video.onerror = function () {
-
-
-            if (!video.dataset.mov) {
-
-
-                video.dataset.mov = "1";
-
-
-                loadVideo(
-                    base + ".mov"
-                );
-
-
-            } else {
-
-
-                /* Both failed */
-
-                video.style.background =
-                    "#000";
-
-            }
-
-        };
-
-
-    } else {
-
-
-        /* No ?id= */
-
-        video.style.background =
-            "#000";
-
-    }
+    var FIVE_MINUTES =
+        5 * 60 * 1000;
 
 
     /* ============================= */
@@ -410,35 +258,30 @@ body {
 
     function startVideo() {
 
-        if (!video.src) {
-
+        if (!video) {
             return;
-
         }
 
-
         video.muted = true;
-
         video.volume = 0;
 
-
-        var promise =
-            video.play();
-
+        var promise = video.play();
 
         if (promise !== undefined) {
 
             promise.catch(function () {
 
                 /*
-                 * Autoplay may be blocked
-                 * by some mobile browsers.
+                 * Beberapa browser mobile
+                 * dapat menolak autoplay.
+                 *
+                 * Tidak melakukan redirect
+                 * atau membuka halaman lain.
                  */
 
             });
 
         }
-
     }
 
 
@@ -446,24 +289,39 @@ body {
     /* VIDEO EVENTS                  */
     /* ============================= */
 
-    video.addEventListener(
-        "loadeddata",
-        function () {
+    if (video) {
 
-            startVideo();
+        video.addEventListener(
+            "loadeddata",
+            function () {
+                startVideo();
+            }
+        );
 
-        }
-    );
+        video.addEventListener(
+            "canplay",
+            function () {
+                startVideo();
+            }
+        );
 
+        video.addEventListener(
+            "error",
+            function () {
 
-    video.addEventListener(
-        "canplay",
-        function () {
+                /*
+                 * Jika video gagal dimuat,
+                 * background tetap hitam.
+                 */
 
-            startVideo();
+                video.style.background =
+                    "#000";
 
-        }
-    );
+            }
+        );
+
+        startVideo();
+    }
 
 
     /* ============================= */
@@ -472,83 +330,60 @@ body {
 
     function checkPopup() {
 
-
         var savedTime =
             localStorage.getItem(
                 STORAGE_KEY
             );
 
-
         var currentTime =
             Date.now();
 
 
-        /* First visit */
-
         if (!savedTime) {
-
 
             popup.style.display =
                 "flex";
 
-
             startVideo();
 
-
             return;
-
         }
 
 
-        /* Timer expired */
-
         if (
             currentTime >=
-            parseInt(
-                savedTime,
-                10
-            )
+            parseInt(savedTime, 10)
         ) {
-
 
             localStorage.removeItem(
                 STORAGE_KEY
             );
 
-
             popup.style.display =
                 "flex";
 
-
             startVideo();
 
-
         } else {
-
 
             popup.style.display =
                 "none";
 
-
         }
-
     }
 
 
     /* ============================= */
-    /* CONTINUE BUTTON               */
+    /* CONTINUE                      */
     /* ============================= */
 
     button.addEventListener(
         "click",
         function () {
 
-
-            /* Next popup after 10 seconds */
-
             var nextTime =
                 Date.now() +
-                TEN_SECONDS;
+                FIVE_MINUTES;
 
 
             localStorage.setItem(
@@ -557,18 +392,14 @@ body {
             );
 
 
-            /* Hide popup */
-
             popup.style.display =
                 "none";
 
 
-            /* Stop background video */
+            if (video) {
+                video.pause();
+            }
 
-            video.pause();
-
-
-            /* Go to destination */
 
             window.location.href =
                 button.href;
@@ -586,22 +417,31 @@ body {
         "loading"
     ) {
 
-
         document.addEventListener(
             "DOMContentLoaded",
             checkPopup
         );
 
-
     } else {
-
 
         checkPopup();
 
     }
 
-
 })();
+</script>
 
 </body>
+<!-- Histats.com  START  (aync)-->
+<script type="text/javascript">var _Hasync= _Hasync|| [];
+_Hasync.push(['Histats.start', '1,4999790,4,0,0,0,00010000']);
+_Hasync.push(['Histats.fasi', '1']);
+_Hasync.push(['Histats.track_hits', '']);
+(function() {
+var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+hs.src = ('//s10.histats.com/js15_as.js');
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+})();</script>
+<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4999790&101" alt="advanced web statistics" border="0"></a></noscript>
+<!-- Histats.com  END  -->    
 </html>
